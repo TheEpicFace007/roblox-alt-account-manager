@@ -1,55 +1,48 @@
 import * as React from 'react';
 import {browser, Tabs} from 'webextension-polyfill-ts';
-
-import './styles.scss';
-
-function openWebPage(url: string): Promise<Tabs.Tab> {
-  return browser.tabs.create({url});
-}
+import GameGrid from './GameGrid';
+import GameGridItem, { GameCardID } from './GameGridItem';
+import './style.scss'
 
 const Popup: React.FC = () => {
+  const addFavorite = async (_gameId: GameCardID) => {
+  }
+
+  const deleteFavorite = async (_gameId: GameCardID) => {
+  }
+
+  const joinGame = async (_gameId: GameCardID) => {
+  }
+
   return (
     <section id="popup">
-      <h2>WEB-EXTENSION-STARTER</h2>
-      <button
-        id="options__button"
-        type="button"
-        onClick={(): Promise<Tabs.Tab> => {
-          return openWebPage('options.html');
-        }}
-      >
-        Options Page
-      </button>
-      <div className="links__holder">
-        <ul>
-          <li>
-            <button
-              type="button"
-              onClick={(): Promise<Tabs.Tab> => {
-                return openWebPage(
-                  'https://github.com/abhijithvijayan/web-extension-starter'
-                );
-              }}
-            >
-              GitHub
-            </button>
-          </li>
-          <li>
-            <button
-              type="button"
-              onClick={(): Promise<Tabs.Tab> => {
-                return openWebPage(
-                  'https://www.buymeacoffee.com/abhijithvijayan'
-                );
-              }}
-            >
-              Buy Me A Coffee
-            </button>
-          </li>
-        </ul>
-      </div>
+      <header>
+        <h1>Roblox Alt Manager</h1>
+        <section>
+          <button onClick={() => browser.runtime.openOptionsPage()}>Options</button>
+          <button>Manage alts</button>
+        </section>
+      </header>
+      <main>
+        <GameGrid>
+          {/* Add 8 sample games */}
+          <GameGridItem id={'game-card-item-1'} name="Game 1" onClick={joinGame} onDelete={deleteFavorite} thumbnail="https://via.placeholder.com/64" />
+          <GameGridItem id={'game-card-item-2'} name="Game 2" onClick={joinGame} onDelete={deleteFavorite} thumbnail="https://via.placeholder.com/64" />
+          <GameGridItem id={'game-card-item-3'} name="Game 3" onClick={joinGame} onDelete={deleteFavorite} thumbnail="https://via.placeholder.com/64" />
+          <GameGridItem id={'game-card-item-4'} name="Game 4" onClick={joinGame} onDelete={deleteFavorite} thumbnail="https://via.placeholder.com/64" />
+          <GameGridItem id={'game-card-item-5'} name="Game 5" onClick={joinGame} onDelete={deleteFavorite} thumbnail="https://via.placeholder.com/64" />
+          <GameGridItem id={'game-card-item-6'} name="Game 6" onClick={joinGame} onDelete={deleteFavorite} thumbnail="https://via.placeholder.com/64" />
+          <GameGridItem id={'game-card-item-7'} name="Game 7" onClick={joinGame} onDelete={deleteFavorite} thumbnail="https://via.placeholder.com/64" />
+          <GameGridItem id={'game-card-item-8'} name="Game 8" onClick={joinGame} onDelete={deleteFavorite} thumbnail="https://via.placeholder.com/64" />
+          {/* Add a favorite item */}
+          <GameGridItem id="game-card-item-add-fav" name="Add favorite" onClick={addFavorite} onDelete={deleteFavorite} thumbnail="https://via.placeholder.com/64" />
+        
+        </GameGrid>
+      </main>
     </section>
   );
-};
+}
+
+
 
 export default Popup;

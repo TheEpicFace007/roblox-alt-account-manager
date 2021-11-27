@@ -1,0 +1,56 @@
+.game-grid {
+  display:  flex;
+  flex-direction: column;
+
+  // this is the grid of the game grid
+  // It contain a container which contain a list of game layed out by 3 columns 
+  &-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 1rem;
+    margin-bottom: 1rem;
+  
+
+  }
+
+  // This is a game card. It container a game image and a button to delete the favorite. 
+  // It show a zoom in animation when the card is hovered with a gradient background down to the bottom
+  &-item {
+    display: flex;
+    &-delete {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      $del-sizing: 20px;
+      width: $del-sizing;
+      height: $del-sizing;
+      border-radius: 50%;
+      background-color: #fff;
+      color: #000;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      // place the element over the image
+      position: absolute;
+      margin-left: 2px;
+      margin-top: 3px;
+
+      img {
+        width: $del-sizing - 2px;
+        height: $del-sizing - 2px;
+      }
+      
+      &:hover {
+        background-color: #da6a6a;
+        color: #fff;
+      }
+    }
+
+    &-inner {
+      // align the text to the center
+      div {
+        text-align: center;
+      }
+    }
+  }
+}
