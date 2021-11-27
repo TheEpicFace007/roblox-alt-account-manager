@@ -1,6 +1,6 @@
 import React from 'react';
 
-export type GameCardID = `game-card-item-${string}`
+export type GameCardID = `${string}`
 
 /**
  * This is the GameGridItem component. 
