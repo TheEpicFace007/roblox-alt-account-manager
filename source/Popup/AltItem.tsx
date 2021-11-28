@@ -7,7 +7,9 @@ import React, { FC } from "react";
 const AltItem: FC<{
   username?: string;
   profilePicture?: string;
-  isCurrent?: boolean
+  isCurrent?: boolean;
+  onClick?: (username: string) => void;
+  onDelete?: (usenrame: string) => void;
 }> = ({ username, profilePicture, isCurrent }) => {
   return (
     <li className={`alt-item${isCurrent ? "-current" : ""}`}>
@@ -21,7 +23,7 @@ AltItem.displayName = "AltItem";
 AltItem.defaultProps = {
   username: "Roblox",
   profilePicture: "https://www.roblox.com/Thumbs/Avatar.ashx?x=100&y=100&format=png&username=Roblox",
-  isCurrent: false
+  isCurrent: false,
 }
 
 export default AltItem;
