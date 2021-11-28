@@ -47,6 +47,10 @@ export default class CookieJar {
     return this._cookies.map(([c, v]) => `${c}=${v}`).join("; ");
   }
 
+  public removeFromRegex(regex: RegExp): void {
+    this._cookies = this._cookies.filter(([c]) => !regex.test(c));
+  }
+
   static fromString(cookieString: string): CookieJar {
     const jar = new CookieJar();
     const cookies = cookieString.split("; ");
