@@ -54,3 +54,89 @@
     }
   }
 }
+
+/**
+* Style out the alt manager
+*/
+#alt-manager {
+  display: flex;
+  flex-direction: column;
+  h1, h2 {
+    padding: 0;
+    margin: 0;
+  }
+
+  #alt-list {
+    display: flex;
+    flex-direction: column;
+    
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 5px;
+      scroll-behavior: smooth;
+      height: 400px;
+      // make the list scrollable
+      overflow-y: scroll;
+      // Put out an nice border around the list
+      border: 1px solid #000;
+      border-radius: 5px;
+      // Put out a nice shadow
+      box-shadow: 0 0 5px #000;
+      // Put out a nice padding
+      padding: 0.8em;
+    }
+  }
+}
+
+.alt-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  // Put out an nice modern border 
+  border: 1px solid #ccc;
+  border-radius: 5px;;
+  margin-bottom: 0.5em;
+  padding: 0.5em;
+  // Put out a nice shadow
+  box-shadow: 0 0 5px #ccc;
+  // Put out a nice transition
+  transition: all 0.3s ease;  
+  
+  &-selcted {
+    background-color: #ccc;
+  }
+  &-image-container {
+    display: flow-root
+
+    img, svg { grid-column: 1; grid-row: 1; }
+    img {
+      height: 80px;
+      width: auto;
+      // brighten the image
+      filter: brightness(1.8);
+      // add a outline to the image
+    }
+
+    /**
+    * Place the SVG trash icon on botttopom left of the image.
+    * It should be over the image
+    */
+    svg {
+      top: 100%;
+      &:hover {
+        fill: #da6a6a;
+      }
+    }
+  }
+}
+
+.alt-item:hover {
+  background-color: #ccc;
+}
+
+.alt-item:active {
+  background-color: #aaa;
+  // Put out a nice transition
+  transition: all 0.3s ease; 
+}
