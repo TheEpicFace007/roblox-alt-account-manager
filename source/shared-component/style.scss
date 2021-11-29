@@ -1,0 +1,70 @@
+// Style the message box component located in ./MessageBox.tsx
+.message-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    height: auto;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  }
+
+  &-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: auto;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+  }
+
+  &-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: auto;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+  }
+
+  button {
+    margin: 0 10px;
+    padding: 10px;
+    font-size: 1rem;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+  }
+}

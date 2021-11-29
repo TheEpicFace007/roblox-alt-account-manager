@@ -1,57 +1,39 @@
+@import url(https://fonts.googleapis.com/css?family=Poppins:100,100italic,200,200italic,300,300italic,regular,italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic);
+
+:root {
+  font-family: Poppins, sans-serif;
+}
+
+
+section > h1 h2 h3 h4 h5 h6   {
+  font-weight: 600;
+}
+
+header {
+  h1 {
+    padding: 0;
+    margin: 0;
+  }
+}
 .game-grid {
-  display:  flex;
+  display: flex;
   flex-direction: column;
 
-  // this is the grid of the game grid
-  // It contain a container which contain a list of game layed out by 3 columns 
-  &-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 1rem;
-    margin-bottom: 1rem;
-  
+  h1 { font-size: 1rem; padding: 0; margin: 0; }
+  section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 
+    button, input {
+      margin: 0.5rem;
+    }
   }
 
-  // This is a game card. It container a game image and a button to delete the favorite. 
-  // It show a zoom in animation when the card is hovered with a gradient background down to the bottom
-  &-item {
-    display: flex;
-    &-delete {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      $del-sizing: 20px;
-      width: $del-sizing;
-      height: $del-sizing;
-      border-radius: 50%;
-      background-color: #fff;
-      color: #000;
-      font-size: 1.5rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      // place the element over the image
-      position: absolute;
-      margin-left: 2px;
-      margin-top: 3px;
-
-      img {
-        width: $del-sizing - 2px;
-        height: $del-sizing - 2px;
-      }
-      
-      &:hover {
-        background-color: #da6a6a;
-        color: #fff;
-      }
-    }
-
-    &-inner {
-      // align the text to the center
-      div {
-        text-align: center;
-      }
-    }
+  &-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(64px, 3fr));
   }
 }
 
@@ -68,7 +50,9 @@
 
   #alt-list {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     
     ul {
       list-style: none;
@@ -85,6 +69,23 @@
       box-shadow: 0 0 5px #000;
       // Put out a nice padding
       padding: 0.8em;
+
+      h4 {
+        margin: 0;
+        padding: 0;
+        align-self: center;
+      }
+    }
+  }
+
+  h1 { margin-top: 1rem; }
+  #alt-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    button, input {
+      margin: 0.5rem;
     }
   }
 }
@@ -124,6 +125,9 @@
     */
     svg {
       top: 100%;
+      // Put out a nice transition
+      transition: all 0.3s ease;
+      cursor: pointer;
       &:hover {
         fill: #da6a6a;
       }
@@ -135,8 +139,25 @@
   background-color: #ccc;
 }
 
-.alt-item:active {
-  background-color: #aaa;
+.alt-item:active, .alt-item:focus {
+  // put out a bluish whitee
+  background-color: #b8b8b8;
   // Put out a nice transition
   transition: all 0.3s ease; 
+}
+
+#top-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5em;
+  border-bottom: 1px solid #ccc;
+  box-shadow: 0 0 5px #ccc;
+  transition: all 0.3s ease;
+
+  button {
+    margin: 0.5rem;
+    padding: 5px;
+  }
 }
