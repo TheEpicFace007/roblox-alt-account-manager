@@ -2,6 +2,8 @@ import CookieJar from "./cookiejar";
 
 export interface RobloxUser {
   id?: string;
+  Id?: string;
+  Username?: string;
   username?: string;
 }
 
@@ -19,9 +21,19 @@ export async function getRobloxUserById(id: string): Promise<RobloxUser> {
 
 export async function getRobloxUserHeadshot({ usernameOrId, res }: {usernameOrId: string, res: number}): Promise<string> {
   const user = await getRobloxUser(usernameOrId);
-  const response = await fetch(`https://www.roblox.com/headshot-thumbnail/json?userId=${user.id}&width=${res}&height=${res}&format=png`);
-  const json = await response.json();
-  return json.Url;
+  let id = user.id;
+  id ??= user.Id;
+  const response = await fetch(`https://www.roblox.com/headshot-thumbnail/json?userId=${id}&width=${res}&height=${res}&format=png`);
+  const responseCopy = response.clone();
+  try {
+    const json = await response.json();
+    return json.Url;
+  } catch (e) {
+    if (e instanceof SyntaxError) {
+      throw new SyntaxError("Error parsing JSON. Here is a part of the JSON: " + (await responseCopy.text()).substring(0, 100));
+    }
+    throw e;
+  }
 }
 
 
