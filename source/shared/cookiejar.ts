@@ -1,3 +1,6 @@
+import { browser } from "webextension-polyfill-ts";
+import type { Tabs } from "webextension-polyfill-ts";
+
 /**
  * Reimplementation of the cookie jar python module. This is a simple implementation
  */
@@ -59,5 +62,23 @@ export default class CookieJar {
       jar.set(name, value);
     }
     return jar;
+  }
+
+  static async fromTab(tabid: number): Promise<CookieJar> {
+    try {
+      const tab = await browser.tabs.get(tabid)
+      if (tab.url) {
+        const cookies = await browser.cookies.getAll({ url: tab.url });
+        const jar = new CookieJar();
+        for (const cookie of cookies) {
+          jar.set(cookie.name, cookie.value);
+        }
+        return jar;
+      } else {
+        throw new Error("Tab does not have a url");
+      }
+    } catch (e) {
+      throw new Error("Could not get cookies from tab");
+    }
   }
 }

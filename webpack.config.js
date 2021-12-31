@@ -171,6 +171,9 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [{from: 'source/assets', to: 'assets'}],
     }),
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    }),
     // plugin to enable browser reloading in development mode
     extensionReloaderPlugin,
   ],

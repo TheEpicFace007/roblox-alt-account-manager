@@ -1,177 +1,19 @@
-@import url(https://fonts.googleapis.com/css?family=Poppins:100,100italic,200,200italic,300,300italic,regular,italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic);
-
-:root {
-  font-family: Poppins, sans-serif;
-}
-
-
-section > h1 h2 h3 h4 h5 h6   {
-  font-weight: 600;
-}
-
-header {
-  h1 {
-    padding: 0;
-    margin: 0;
-  }
-}
-.game-grid {
-  display: flex;
-  flex-direction: column;
-
-  h1 { font-size: 1rem; padding: 0; margin: 0; }
-  section {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-
-    button, input {
-      margin: 0.5rem;
-    }
-  }
-
-  &-container {
-    display: grid;
-    grid-auto-flow: dense;
-    justify-items: center;
-    grid-template-columns: repeat(3, auto);
-    grid-template-rows: repeat(3, auto);
-
-  
-}
-
-  &-item {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    justify-self: center;
-    align-self: center;
-  }
-}
-
-/**
-* Style out the alt manager
-*/
-#alt-manager {
-  display: flex;
-  flex-direction: column;
-  h1, h2 {
-    padding: 0;
-    margin: 0;
-  }
-
-  #alt-list {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 5px;
-      scroll-behavior: smooth;
-      height: 400px;
-      // make the list scrollable
-      overflow-y: scroll;
-      // Put out an nice border around the list
-      border: 1px solid #000;
-      border-radius: 5px;
-      // Put out a nice shadow
-      box-shadow: 0 0 5px #000;
-      // Put out a nice padding
-      padding: 0.8em;
-
-      h4 {
-        margin: 0;
-        padding: 0;
-        align-self: center;
-      }
-    }
-  }
-
-  h1 { margin-top: 1rem; }
-  #alt-buttons {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    button, input {
-      margin: 0.5rem;
+.view-selection {
+  margin: 0 5px;
+  button { 
+    margin: 5px;
+    div {
+      padding: 5px 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
     }
   }
 }
 
-.alt-item {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  // Put out an nice modern border 
-  border: 1px solid #ccc;
-  border-radius: 5px;;
-  margin-bottom: 0.5em;
-  padding: 0.5em;
-  // Put out a nice shadow
-  box-shadow: 0 0 5px #ccc;
-  // Put out a nice transition
-  transition: all 0.3s ease;  
-  
-  &-selcted {
-    background-color: #ccc;
-  }
-  &-image-container {
-    display: flow-root
-
-    img, svg { grid-column: 1; grid-row: 1; }
-    img {
-      height: 80px;
-      width: auto;
-      // brighten the image
-      filter: brightness(1.8);
-      // add a outline to the image
-    }
-
-    /**
-    * Place the SVG trash icon on botttopom left of the image.
-    * It should be over the image
-    */
-    svg {
-      top: 100%;
-      // Put out a nice transition
-      transition: all 0.3s ease;
-      cursor: pointer;
-      &:hover {
-        fill: #da6a6a;
-      }
-    }
-  }
-}
-
-.alt-item:hover {
-  background-color: #ccc;
-}
-
-.alt-item:active, .alt-item:focus {
-  // put out a bluish whitee
-  background-color: #b8b8b8;
-  // Put out a nice transition
-  transition: all 0.3s ease; 
-}
-
-#top-bar {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.5em;
-  border-bottom: 1px solid #ccc;
-  box-shadow: 0 0 5px #ccc;
-  transition: all 0.3s ease;
-
-  button {
-    margin: 0.5rem;
-    padding: 5px;
-  }
+#head {
+  border-bottom: 1px outset #ccc;
+  // add a shadow
+  box-shadow: 0px 0px 5px #ccc;
+  margin-bottom: 5px;
 }
