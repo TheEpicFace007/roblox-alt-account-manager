@@ -46,9 +46,6 @@ export const AltListItem: React.FC<AltList> = ({ alt, onUseAlt, onRemoveAlt }) =
     const onClickUseAlt = () => {
         onUseAlt(alt);
     }
-    const onClickRemoveAlt = () => {
-        onRemoveAlt(alt);
-    }
     const onClickFavorite = () => {
         //TODO: set the alt as favorite in browser storage using the extension 
         setFavorite(!favorite);
