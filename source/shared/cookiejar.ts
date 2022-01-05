@@ -81,4 +81,11 @@ export default class CookieJar {
       throw new Error("Could not get cookies from tab");
     }
   }
+
+  public loadToTab(tabid: number): void {
+    browser.tabs.sendMessage(tabid, {
+      type: "load-cookies",
+      cookies: this.toString()
+    });
+  }
 }
