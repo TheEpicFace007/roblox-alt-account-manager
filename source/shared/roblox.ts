@@ -20,9 +20,17 @@ export async function getRobloxUserById(id: string): Promise<RobloxUser> {
 }
 
 export async function getRobloxUserHeadshot({ usernameOrId, res }: { usernameOrId: string, res: number }): Promise<string> {
-  const user = await getRobloxUser(usernameOrId);
-  let id = user.id;
-  id ??= user.Id;
+  let user: RobloxUser | null = null; 
+  if (isNaN(parseInt(usernameOrId))) 
+    user = await getRobloxUser(usernameOrId);
+  let id
+  if (user === null)
+    id = usernameOrId
+  else if (user.Id === undefined)
+    id = user.id
+  else
+    id = user.Id
+    
   if (!id) 
     throw new Error("Could not get Roblox user id");
   
@@ -143,4 +151,3 @@ export async function getThumbnail(universeIds: string[], opts: { size: RobloxAs
 
   return [];
 }
-
