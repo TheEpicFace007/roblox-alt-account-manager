@@ -30,13 +30,25 @@ export const AltListItem: React.FC<AltList> = ({ alt, onUseAlt, onRemoveAlt }) =
         //TODO: set the alt as favorite in browser storage using the extension 
         setFavorite(!favorite);
     }
-
     const [headshot, setHeadshot] = React.useState<string>("");
-    getRobloxUserHeadshot({ usernameOrId: alt, res: 100 }).then(headshot => {
-        if (headshot) {
-            setHeadshot(headshot);
+    React.useEffect(() => {
+        let active = true;
+        load();
+        return () => { active = false };
+        async function load() {
+            if (active) {
+                try {
+                    const headshot = await getRobloxUserHeadshot({ usernameOrId: alt, res: 100 });
+                    if (active) {
+                        setHeadshot(headshot);
+                    }
+                } catch (e) {
+                    setHeadshot("");
+                }
+            }
         }
-    });
+    }, [alt]);
+
     return (
         <div className="alt-list-item">
             <Container>
