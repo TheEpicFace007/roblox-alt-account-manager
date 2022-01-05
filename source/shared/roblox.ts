@@ -23,6 +23,9 @@ export async function getRobloxUserHeadshot({ usernameOrId, res }: { usernameOrI
   const user = await getRobloxUser(usernameOrId);
   let id = user.id;
   id ??= user.Id;
+  if (!id) 
+    throw new Error("Could not get Roblox user id");
+  
   const response = await fetch(`https://www.roblox.com/headshot-thumbnail/json?userId=${id}&width=${res}&height=${res}&format=png`);
   const responseCopy = response.clone();
   try {
