@@ -16,6 +16,8 @@
   "permissions": [
     "activeTab",
     "storage",
+    "cookies",
+    "tabs",
     "http://*/*",
     "https://*/*"
   ],
