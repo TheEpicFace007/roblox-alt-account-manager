@@ -3,23 +3,43 @@ import './style.scss'
 import { Text, NextUIProvider, useTheme, createTheme, Container, Button, Row, Col, Spacer, Avatar, Grid, Input, Modal, FormElement } from "@nextui-org/react"
 import useDarkMode from 'use-dark-mode';
 import { IconlyProvider, Play, TwoUsers, VolumeUp } from 'react-iconly';
-import { getRobloxUserHeadshot, getUniverseID } from '../shared/roblox';
+import { getRobloxUserHeadshot } from '../shared/roblox';
 import { AltListItem } from '../shared-component/AltListItem';
 import '../shared-component/style.scss'
 import { useList } from 'react-use';
 import { GameThumbnail } from '../shared-component/GameThumbnail';
+import { getAllAltAccountsFromStorage, saveAltAccountFromTab } from '../shared/storage';
 
 type ViewMode = "alt-list" | "game-list";
 
 const Popup: React.FC = () => {
-  const [viewMode, setViewMode] = React.useState<ViewMode>("game-list");
+  const [viewMode, setViewMode] = React.useState<ViewMode>("alt-list");
   const darkMode = useDarkMode();
   const { type, isDark } = useTheme();
   const darkTheme = createTheme(
     { type: isDark ? "dark" : "light" },
   )
-  const [alt, setAlt] = React.useState<string>("JaneDoe"); // TODO: get from storage the current user
+  const [currentAlt, setCurrentAlt] = React.useState<string>("JaneDoe"); // TODO: get from storage the current user
   const [altHeadshot, setAltHeadshot] = React.useState<string>("");
+  const [alts, setAlts] = React.useState<string[]>([]);
+  React.useEffect(() => {
+    let loaded = false;
+    load()
+    return () => { loaded = false }
+    async function load() {
+      if (!loaded) {
+        try {
+          const alts = await getAllAltAccountsFromStorage();
+          setAlts(Object.keys(alts));
+        } catch (e) {
+          console.error(e);
+        }
+        loaded = true;
+      }
+    }  
+  })
+
+  // This hook get the headshot for the current alt
   React.useEffect(() => {
     let active = true;
     load();
@@ -27,7 +47,7 @@ const Popup: React.FC = () => {
     async function load() {
       if (active) {
         try {
-          const headshot = await getRobloxUserHeadshot({ usernameOrId: alt, res: 100 });
+          const headshot = await getRobloxUserHeadshot({ usernameOrId: currentAlt, res: 100 });
           if (active) {
             setAltHeadshot(headshot);
           }
@@ -37,22 +57,31 @@ const Popup: React.FC = () => {
       }
     }
 
-  }, [alt])
+  }, [currentAlt])
   const gameLinkRef = React.useRef<FormElement>(null);
   const [addGameShow, setAddGameShow] = React.useState(false);
 
-  const useAlt = (alt: string) => {
+  const useAlt = (_alt: string) => {
   }
-  const removeAlt = (alt: string) => {
+  const removeAlt = (_alt: string) => {
   }
   const [gameLink, setGameLink] = React.useState("");
+
+  /**
+   * This function is used to update the favorites games list, the alts list, and the current alt state 
+   * 
+   */
+  function update() {
+    getAllAltAccountsFromStorage().then(Object.keys).then(setAlts);
+    
+  }
 
   return (
     <NextUIProvider><IconlyProvider set='curved'>
       <section id="popup">
-        <Container sm gap={10} id='head'>
+        <Container gap={10} id='head'>
           <Row align='flex-start' justify='space-between'>
-            <Col>
+            <Col span={10}>
               <Text h2 b>Alt account manager</Text>
             </Col>
             <Col span={3} className="view-selection">
@@ -70,16 +99,16 @@ const Popup: React.FC = () => {
           </Row>
         </Container>
 
-        {/* The following component is the list of alts. */}
+        {/* The following component is the menu of the list of alts. */}
         {viewMode === "alt-list" &&
           <Grid.Container gap={1}>
             <Grid xs={5}>
               <Spacer />
-              <Text>Currently signed in alt: <Text b>{alt || 'None'}</Text></Text>
+              <Text>Currently signed in alt: <Text b>{currentAlt || 'None'}</Text></Text>
               <Spacer />
               <Avatar src={altHeadshot} color='gradient' bordered squared size='md' />
             </Grid>
-            <Grid sm>
+            <Grid>
               <Button type="button" size='sm' onClick={() => addAlt()}
                 color='gradient'
                 about='Add an alt'
@@ -93,9 +122,15 @@ const Popup: React.FC = () => {
             <Input placeholder="Filter alts..." onInput={_ => {
               // TODO: filter the list of alts based on the input dynamically
             }} width='100%' />
-            <AltListItem alt={alt} onUseAlt={useAlt} onRemoveAlt={removeAlt} />
+            <AltListItem alt={currentAlt} onUseAlt={useAlt} onRemoveAlt={removeAlt} />
             <AltListItem alt='Roblox' onUseAlt={useAlt} onRemoveAlt={removeAlt} />
             <AltListItem alt='Builderman' onUseAlt={useAlt} onRemoveAlt={removeAlt} />
+            <AltListItem alt='261' onUseAlt={useAlt} onRemoveAlt={removeAlt} />
+            {
+              alts.map((alt, idx) =>
+                <AltListItem alt={alt} onUseAlt={useAlt} onRemoveAlt={removeAlt} key={`${alt}-${idx}`}/>
+              )
+            }
           </Container>
         }
         {/* The following is a component that descrbes what the game list is. */}
@@ -148,10 +183,12 @@ const Popup: React.FC = () => {
       </section>
     </IconlyProvider></NextUIProvider>
   );
+
+  function addAlt(): void {
+    saveAltAccountFromTab().catch(alert);
+
+  }
 }
 
 export default Popup;
-function addAlt(): void {
-  throw new Error('Function not implemented.');
-}
 
