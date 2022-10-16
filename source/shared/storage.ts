@@ -99,7 +99,7 @@ export class AltAccount {
   }
 
   /**
-   * This method will load the alt account to the tab.
+   * This method will load the alt account in a tab.
    * @param tab The tab to load the account to. If no tab is given, the current tab will be used.
    * @returns The tab.
    * @throws If the tab is not a roblox tab.
