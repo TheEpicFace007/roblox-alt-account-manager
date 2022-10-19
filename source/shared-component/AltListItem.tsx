@@ -15,12 +15,24 @@ export type AltList = {
     onRemoveAlt: (alt: string) => void,
 }
 
+function detectSysTheme() {
+    const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    return isDark;
+}
+
 export const AltListItem: React.FC<AltList> = ({ alt, onUseAlt, onRemoveAlt }) => {
     const [favorite, setFavorite] = React.useState(false);
     const [dropdownOpen, setDropdownOpen] = React.useState(false);
     const [altHeadshot, setAltHeadshot] = React.useState<string>("");
     const [deleteStage, setDeleteStage] = React.useState(0);
     const [altname, setAltname] = React.useState(alt);
+    const [useButtonDisabled, setUseButtonDisabled] = React.useState(false);
+
+    useEffect(() => {
+        if (window.location.toString().includes("options")) {
+            setUseButtonDisabled(true);
+        }
+    }, [])
     useEffect(() => {
         let active = true;
         load();
@@ -69,7 +81,7 @@ export const AltListItem: React.FC<AltList> = ({ alt, onUseAlt, onRemoveAlt }) =
             <Container>
                 <Row align="center">
                     <Col>
-                        <Text h3>{altname}</Text>
+                        <Text h3 color={useButtonDisabled && detectSysTheme() ? 'white' : 'black'}>{altname}</Text>
                     </Col>
                     <Col>
                         <Button
@@ -85,7 +97,7 @@ export const AltListItem: React.FC<AltList> = ({ alt, onUseAlt, onRemoveAlt }) =
                     <Col>
                         <Button type='button' onClick={() => onUseAlt(alt)}
                             icon={<Play set='curved' />} color='success' shadow
-                            size='sm'
+                            size='sm' disabled={useButtonDisabled}
                         >Use</Button> 
                     </Col>
                 </Row>
