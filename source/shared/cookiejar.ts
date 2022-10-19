@@ -5,7 +5,7 @@ import type { Tabs } from "webextension-polyfill-ts";
  * Reimplementation of the cookie jar python module. This is a simple implementation
  */
 export default class CookieJar {
-  private _cookies: [string, string][];
+  public _cookies: [string, string][];
   constructor() {
     this._cookies = [];
   }
