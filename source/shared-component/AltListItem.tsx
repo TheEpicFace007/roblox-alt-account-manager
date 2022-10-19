@@ -15,7 +15,7 @@ export type AltList = {
     onRemoveAlt: (alt: string) => void,
 }
 
-export const AltListItem: React.FC<AltList> = ({ alt, onUseAlt }) => {
+export const AltListItem: React.FC<AltList> = ({ alt, onUseAlt, onRemoveAlt }) => {
     const [favorite, setFavorite] = React.useState(false);
     const [dropdownOpen, setDropdownOpen] = React.useState(false);
     const [altHeadshot, setAltHeadshot] = React.useState<string>("");
@@ -46,10 +46,6 @@ export const AltListItem: React.FC<AltList> = ({ alt, onUseAlt }) => {
     const onClickUseAlt = () => {
         onUseAlt(alt);
     }
-    const onClickFavorite = () => {
-        //TODO: set the alt as favorite in browser storage using the extension 
-        setFavorite(!favorite);
-    }
 
     const innerOnDelete = () => {
         setDeleteStage(() => deleteStage + 1);
@@ -57,13 +53,12 @@ export const AltListItem: React.FC<AltList> = ({ alt, onUseAlt }) => {
             setDeleteStage(0);
             clearTimeout(timeout);
         }, 1000);
-        console.log(deleteStage)
         if (deleteStage === 0) {
             setDeleteStage(1);
         } else if (deleteStage === 1) {
             setDeleteStage(2);
         } else if (deleteStage === 2) {
-            // onDelete()
+            onRemoveAlt(alt)
         } else {
             setDeleteStage(0);
         }
@@ -77,17 +72,6 @@ export const AltListItem: React.FC<AltList> = ({ alt, onUseAlt }) => {
                         <Text h3>{altname}</Text>
                     </Col>
                     <Col>
-                        <Spacer y={0.4} />
-                        <Button
-                            auto
-                            type="button"
-                            icon={<Star set='curved' filled={favorite} />}
-                            onClick={onClickFavorite}
-                            color={favorite ? 'warning' : 'primary'}
-                            flat
-                            size='xs'
-                        />
-                        <Spacer y={0.4}/>
                         <Button
                             auto
                             type='button'

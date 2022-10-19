@@ -5,6 +5,8 @@ export interface RobloxUser {
   Id?: string;
   Username?: string;
   username?: string;
+  name?: string;
+  Name?: string;
 }
 
 export async function getRobloxUser(username: string): Promise<RobloxUser> {
@@ -34,7 +36,8 @@ export async function getRobloxUserHeadshot({ usernameOrId, res }: { usernameOrI
   if (!id) 
     throw new Error("Could not get Roblox user id");
   
-  const response = await fetch(`https://www.roblox.com/headshot-thumbnail/json?userId=${id}&width=${res}&height=${res}&format=png`);
+  const response = await fetch(`https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${id}&size=${res}x${res}&format=Png&isCircular=false`, {
+  });
   const responseCopy = response.clone();
   try {
     const json = await response.json();

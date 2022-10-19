@@ -4,7 +4,13 @@
   overflow-y: scroll;
   margin-bottom: 5px;
 
+  @media (prefer-color-scheme: dark) {
+    border: 2px outset #333;
+  }
+    
+
   .alt-list-item {
+
     border: #ccc 1px solid;
     border-top: none;
     border-left: none;

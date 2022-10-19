@@ -3,52 +3,71 @@ import './style.scss'
 import { Text, NextUIProvider, useTheme, createTheme, Container, Button, Row, Col, Spacer, Avatar, Grid, Input, Modal, FormElement } from "@nextui-org/react"
 import useDarkMode from 'use-dark-mode';
 import { IconlyProvider, Play, TwoUsers, VolumeUp } from 'react-iconly';
-import { getRobloxUserHeadshot } from '../shared/roblox';
+import { getRobloxUserFromCookies, getRobloxUserHeadshot } from '../shared/roblox';
 import { AltListItem } from '../shared-component/AltListItem';
 import '../shared-component/style.scss'
 import { useList } from 'react-use';
 import { GameThumbnail } from '../shared-component/GameThumbnail';
-import { getAllAltAccountsFromStorageb } from '../shared/storage';
+import { AltAccount } from '../shared/storage';
+import { browser } from 'webextension-polyfill-ts';
+import CookieJar from '../shared/cookiejar';
+import { ThemeProvider } from 'next-themes'
 
 const Popup: React.FC = () => {
   const darkMode = useDarkMode();
   const { type, isDark } = useTheme();
-  const darkTheme = createTheme(
-    { type: isDark ? "dark" : "light" },
-  )
+  const lightTheme = createTheme({ type: 'light' });
+  const darkTheme = createTheme({ type: 'dark' });
+  
+  async function addAlt() {
+    const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
+    if (tab.url !== undefined && tab.url.includes("roblox.com") && tab.id !== undefined) {
+      const cookies = await CookieJar.fromTab(tab.id)
+      // find the alt account roblox id
+      const rbxUser = await getRobloxUserFromCookies(cookies)
+      if ((!rbxUser.Id && !rbxUser.id) && (!rbxUser.Name && !rbxUser.name))
+        return
 
-  function addAlt() {
+      if (rbxUser) {
+        const altAccount: AltAccount = new AltAccount(rbxUser.id as string || rbxUser.Id as string, cookies)
 
-  }
-
-  const [currentAlt, setCurrentAlt] = React.useState<string>("JaneDoe"); // TODO: get from storage the current user
-  const [altHeadshot, setAltHeadshot] = React.useState<string>("");
-  const [alts, setAlts] = React.useState<string[]>([]);
-  // This hook get the headshot for the current alt
-  React.useEffect(() => {
-    let active = true;
-    load();
-    return () => { active = false };
-    async function load() {
-      if (active) {
-        try {
-          const headshot = await getRobloxUserHeadshot({ usernameOrId: currentAlt, res: 100 });
-          console.log(headshot);
-          if (active) {
-            setAltHeadshot(headshot);
-          }
-        } catch (e) {
-          setAltHeadshot("");
-        }
+        altAccount.username = rbxUser.name as string ?? rbxUser.Name as string
+        altAccount.save()
+        console.log("Saved alt account", altAccount)
+        // reload the popup
+        window.location.reload()
       }
     }
-
-  }, [currentAlt])
-
-  const useAlt = (_alt: string) => {
   }
-  const removeAlt = (_alt: string) => {
+
+  const [currentAlt, setCurrentAlt] = React.useState<string>(""); // TODO: get from storage the current user
+
+  const useAlt = (alt: string) => {
+    // find the alt account roblox id
+    AltAccount.getWithUsername(alt).then(altAccount => {
+      console.log("Using alt account", altAccount)
+      if (altAccount !== null && altAccount !== undefined) {
+        AltAccount.use(altAccount.id)
+        console.log("Using alt account", altAccount)
+      } 
+    })
   }
+  const removeAlt = (alt: string) => {
+    AltAccount.getWithUsername(alt).then(altAccount => {
+      if (altAccount !== null) {
+        AltAccount.remove(altAccount.id)
+        window.location.reload()
+      } 
+    })
+  }
+  const [alts, { push, removeAt, filter }] = useList<AltAccount>([]);
+  React.useEffect(() => {
+    load()
+    async function load() {
+      const alts = await AltAccount.getAll();
+      alts.forEach(alt => push(alt));
+    }
+  }, [])
 
   return (
     <NextUIProvider><IconlyProvider set='curved'>
@@ -59,11 +78,24 @@ const Popup: React.FC = () => {
 
         {/* The following component is the menu of the list of alts. */}
         {
-          <Grid.Container gap={1} style={{'justifyContent': 'center'}}>
+          <Grid.Container gap={1} style={{'justifyContent': 'center', width: '500px'}}>
             <Grid xs={6}>
-              <Spacer />
-              <Text>Currently signed in alt: <Text b>{currentAlt || 'None'}</Text></Text>
-              <Spacer />
+              <Button type="button" size='sm' color='warning' onClick={async() => {
+                const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
+                if (tab.url !== undefined && tab.url.includes("roblox.com") && tab.id !== undefined) {
+                  if (!tab) 
+                    throw new Error("No active tab");
+                  await browser.cookies.set({
+                    url: "https://www.roblox.com",
+                    name: ".ROBLOSECURITY",
+                    value: '',
+                    domain: ".roblox.com",
+                    path: "/",
+                    storeId: tab.cookieStoreId,
+                  });
+                  await browser.tabs.reload(tab.id);
+                }
+              }}>Logout</Button>
             </Grid>
             <Grid>
               <Button type="button" size='sm' onClick={() => addAlt()}
@@ -76,10 +108,11 @@ const Popup: React.FC = () => {
         {/* The following component is the list of alt account. */}
         {
           <Container gap={1} className='alt-account-list' alignContent='flex-start'>
-            <Input placeholder="Filter alts..." onInput={_ => {
-              // TODO: filter the list of alts based on the input dynamically
-            }} width='100%' />
-            <AltListItem alt={currentAlt} onUseAlt={useAlt} onRemoveAlt={removeAlt} />
+            {
+              alts.map((alt, index) => {
+                return <AltListItem alt={alt.username} key={index} onUseAlt={useAlt} onRemoveAlt={removeAlt} />
+              })
+            }
           </Container>
         }
       </section>
