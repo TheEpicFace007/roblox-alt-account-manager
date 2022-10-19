@@ -4,7 +4,17 @@
 
 @import "~webext-base-css/webext-base.css";
 
-body {
-  color: $black;
-  background-color: $greyWhite;
+.options {
+  height: 500px;
+  width: 350px;
+  overflow-y: scroll;
+}
+
+.alt-list-item {
+  padding: 10px 0;
+  h3 {
+    @media (prefer-color-scheme: dark) {
+      color: #fff !important;
+    }
+  }
 }
