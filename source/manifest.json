@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "Sample WebExtension",
+  "name": "Alt Manager for roblox",
   "version": "0.0.0",
 
   "icons": {
@@ -11,7 +11,7 @@
   },
   "description": "Sample description",
   "homepage_url": "https://github.com/abhijithvijayan/web-extension-starter",
-  "short_name": "Sample Name",
+  "short_name": "Alt Manager",
 
   "permissions": [
     "activeTab",
