@@ -15,7 +15,7 @@ export type AltList = {
     onRemoveAlt: (alt: string) => void,
 }
 
-export const AltListItem: React.FC<AltList> = ({ alt, onUseAlt, onRemoveAlt }) => {
+export const AltListItem: React.FC<AltList> = ({ alt, onUseAlt }) => {
     const [favorite, setFavorite] = React.useState(false);
     const [dropdownOpen, setDropdownOpen] = React.useState(false);
     const [altHeadshot, setAltHeadshot] = React.useState<string>("");
@@ -50,24 +50,6 @@ export const AltListItem: React.FC<AltList> = ({ alt, onUseAlt, onRemoveAlt }) =
         //TODO: set the alt as favorite in browser storage using the extension 
         setFavorite(!favorite);
     }
-    const [headshot, setHeadshot] = React.useState<string>("");
-    React.useEffect(() => {
-        let active = true;
-        load();
-        return () => { active = false };
-        async function load() {
-            if (active) {
-                try {
-                    const headshot = await getRobloxUserHeadshot({ usernameOrId: alt, res: 100 });
-                    if (active) {
-                        setHeadshot(headshot);
-                    }
-                } catch (e) {
-                    setHeadshot("");
-                }
-            }
-        }
-    }, [alt]);
 
     const innerOnDelete = () => {
         setDeleteStage(() => deleteStage + 1);
@@ -91,9 +73,6 @@ export const AltListItem: React.FC<AltList> = ({ alt, onUseAlt, onRemoveAlt }) =
         <div className="alt-list-item">
             <Container>
                 <Row align="center">
-                    <Col>
-                        <Avatar size='md' src={headshot} />
-                    </Col>
                     <Col>
                         <Text h3>{altname}</Text>
                     </Col>
