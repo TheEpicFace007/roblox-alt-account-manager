@@ -15,8 +15,10 @@
     "storage",
     "cookies",
     "tabs",
-    "http://*/*",
-    "https://*/*"
+    "http://*.roblox.com/*",
+    "https://*.roblox.com/*",
+    "http://roblox.com/*",
+    "https://roblox.com/*"
   ],
 
   "content_security_policy": "script-src 'self'; object-src 'self'",
@@ -42,8 +44,10 @@
 
   "content_scripts": [{
     "matches": [
-      "http://*/*",
-      "https://*/*"
+      "http://*.roblox.com/*",
+      "https://*.roblox.com/*",
+      "http://roblox.com/*",
+      "https://roblox.com/*"
     ],
     "js": [
       "js/contentScript.bundle.js"
