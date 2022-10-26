@@ -9,14 +9,17 @@ export interface RobloxUser {
   Name?: string;
 }
 
+// change the mode of request to "no-cors" to avoid CORS errors on all requests
+const defaultRequestOptions: RequestInit = { mode: "no-cors" };
+
 export async function getRobloxUser(username: string): Promise<RobloxUser> {
-  const response = await fetch(`https://api.roblox.com/users/get-by-username?username=${username}`);
+  const response = await fetch(`https://api.roblox.com/users/get-by-username?username=${username}`, { ...defaultRequestOptions });
   const json = await response.json();
   return json;
 }
 
 export async function getRobloxUserById(id: string): Promise<RobloxUser> {
-  const response = await fetch(`https://api.roblox.com/users/${id}`);
+  const response = await fetch(`https://api.roblox.com/users/${id}`, { ...defaultRequestOptions });
   const json = await response.json();
   return json;
 }
@@ -37,6 +40,7 @@ export async function getRobloxUserHeadshot({ usernameOrId, res }: { usernameOrI
     throw new Error("Could not get Roblox user id");
   
   const response = await fetch(`https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${id}&size=${res}x${res}&format=Png&isCircular=false`, {
+    ...defaultRequestOptions,
   });
   const responseCopy = response.clone();
   try {
@@ -61,7 +65,7 @@ export async function getRobloxUserFromCookies(cookies: CookieJar): Promise<Robl
 }
 
 export async function isAccountValid(cookie: CookieJar) {
-  const { status } = await fetch("https://users.roblox.com/v1/users/authentificated", { headers: { "Cookie": cookie.toString() } });
+  const { status } = await fetch("https://users.roblox.com/v1/users/authentificated", { headers: { "Cookie": cookie.toString() }, ...defaultRequestOptions });
   if (status === 200)
     return true;
   else
@@ -76,7 +80,7 @@ export async function getUniverseID(gameId: string) {
     throw new Error("Invalid gameId");
   }
 
-  const response = await fetch(`https://api.roblox.com/universes/get-universe-containing-place?placeid=${gameId}`);
+  const response = await fetch(`https://api.roblox.com/universes/get-universe-containing-place?placeid=${gameId}`, { ...defaultRequestOptions });
   const json = await response.json();
   if (json.errors)
     throw new Error(json.errors[0].message);
@@ -98,7 +102,7 @@ export interface iRobloxAsset {
  * @param gameId The Game ID of the game you want to get the assets for
  */
 export async function getRobloxGameAssets(gameId: string): Promise<iRobloxAsset[]> {
-  const response = await fetch(`https://games.roblox.com/v2/games/${gameId}/media`);
+  const response = await fetch(`https://games.roblox.com/v2/games/${gameId}/media`, { ...defaultRequestOptions });
   const json = await response.json();
   return json.assets;
 }
@@ -124,7 +128,8 @@ export async function getThumbnail(universeIds: string[], opts: { size: RobloxAs
       method: "GET",
       headers: [
         ["Accept", "application/json"],
-      ]
+      ],
+      ...defaultRequestOptions,
     });
     responseClone = response.clone();
 
