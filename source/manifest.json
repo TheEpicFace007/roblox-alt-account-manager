@@ -1,5 +1,5 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Alt Manager for roblox",
   "version": "1.0.0",
 
@@ -14,16 +14,10 @@
     "activeTab",
     "storage",
     "cookies",
-    "tabs",
-    "http://*.roblox.com/*",
-    "https://*.roblox.com/*",
-    "http://roblox.com/*",
-    "https://roblox.com/*"
+    "tabs"
   ],
 
-  "content_security_policy": "script-src 'self'; object-src 'self'",
-
-  "browser_action": {
+  "action": {
     "default_popup": "popup.html",
     "default_icon": {
       "1000": "assets/icons/favicon.png"
@@ -37,10 +31,15 @@
   },
 
   "background": {
-    "scripts": [
-      "js/background.bundle.js"
-    ]
+    "service_worker": "js/background.bundle.js"
   },
+
+  "host_permissions": [
+    "https://*.roblox.com/*",
+    "http://*.roblox.com/*",
+    "https://roblox.com/*",
+    "http://roblox.com/*"
+  ],
 
   "content_scripts": [{
     "matches": [
