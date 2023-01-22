@@ -203,3 +203,6 @@ dist/
 !.yarn/plugins
 .pnp.*
 *.zip
+
+# Mac OS Specifics
+.DS_Store
