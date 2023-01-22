@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Alt Manager for roblox",
-  "version": "1.0.0",
+  "version": "1.0.1",
 
   "icons": {
     "1000":"assets/icons/favicon.png"
@@ -13,8 +13,7 @@
   "permissions": [
     "activeTab",
     "storage",
-    "cookies",
-    "tabs"
+    "cookies"
   ],
 
   "action": {
